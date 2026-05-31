@@ -17,7 +17,6 @@ std::pair<Coord, Coord> SolverHillClimbWorstBlock::getConflictCoords() const
     size_t bestBlockRow = 0;
     size_t bestBlockCol = 0;
 
-    // -------- najdi blok s nejvíce konflikty --------
     for (size_t blockRow = 0; blockRow < m_blockSize; ++blockRow)
     {
         for (size_t blockCol = 0; blockCol < m_blockSize; ++blockCol)
@@ -40,7 +39,6 @@ std::pair<Coord, Coord> SolverHillClimbWorstBlock::getConflictCoords() const
 
                     bool hasConflict = false;
 
-                    // řádek
                     for (size_t i = 0; i < m_size; ++i)
                     {
                         if (i == col)
@@ -53,7 +51,6 @@ std::pair<Coord, Coord> SolverHillClimbWorstBlock::getConflictCoords() const
                         }
                     }
 
-                    // sloupec
                     if (!hasConflict)
                     {
                         for (size_t i = 0; i < m_size; ++i)
@@ -83,7 +80,6 @@ std::pair<Coord, Coord> SolverHillClimbWorstBlock::getConflictCoords() const
         }
     }
 
-    // -------- najdi všechny nefixní buňky v nejhorším bloku --------
     std::vector<Coord> candidates;
 
     for (size_t r = 0; r < m_blockSize; ++r)
@@ -104,7 +100,6 @@ std::pair<Coord, Coord> SolverHillClimbWorstBlock::getConflictCoords() const
     if (candidates.size() < 2)
         return getRandomCoordsInBlock();
 
-    // -------- vyber 2 random buňky --------
     std::uniform_int_distribution<size_t> dist(0, candidates.size() - 1);
 
     size_t i = dist(gen);

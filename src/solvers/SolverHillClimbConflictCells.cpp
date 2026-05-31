@@ -14,7 +14,6 @@ std::pair<Coord, Coord> SolverHillClimbConflictCells::getConflictCoords() const
 
     std::vector<Coord> conflictCoords;
 
-    // -------- najdi všechny konfliktní nefixní buňky --------
     for (size_t row = 0; row < m_size; ++row)
     {
         for (size_t col = 0; col < m_size; ++col)
@@ -28,7 +27,6 @@ std::pair<Coord, Coord> SolverHillClimbConflictCells::getConflictCoords() const
 
             bool hasConflict = false;
 
-            // řádek
             for (size_t i = 0; i < m_size; ++i)
             {
                 if (i == col)
@@ -41,7 +39,6 @@ std::pair<Coord, Coord> SolverHillClimbConflictCells::getConflictCoords() const
                 }
             }
 
-            // sloupec
             if (!hasConflict)
             {
                 for (size_t i = 0; i < m_size; ++i)
@@ -66,12 +63,10 @@ std::pair<Coord, Coord> SolverHillClimbConflictCells::getConflictCoords() const
     if (conflictCoords.empty())
         return getRandomCoordsInBlock();
 
-    // -------- vyber první konfliktní buňku --------
     std::uniform_int_distribution<size_t> dist(0, conflictCoords.size() - 1);
 
     Coord first = conflictCoords[dist(gen)];
 
-    // -------- najdi konfliktní buňky ve stejném bloku --------
     size_t blockRow = first.row / m_blockSize;
     size_t blockCol = first.col / m_blockSize;
 
@@ -96,7 +91,6 @@ std::pair<Coord, Coord> SolverHillClimbConflictCells::getConflictCoords() const
 
             bool hasConflict = false;
 
-            // řádek
             for (size_t i = 0; i < m_size; ++i)
             {
                 if (i == col)
@@ -109,7 +103,6 @@ std::pair<Coord, Coord> SolverHillClimbConflictCells::getConflictCoords() const
                 }
             }
 
-            // sloupec
             if (!hasConflict)
             {
                 for (size_t i = 0; i < m_size; ++i)
@@ -130,11 +123,9 @@ std::pair<Coord, Coord> SolverHillClimbConflictCells::getConflictCoords() const
         }
     }
 
-    // pokud není druhá konfliktní, fallback
     if (sameBlockConflicts.empty())
         return getRandomCoordsInBlock();
 
-    // -------- vyber druhou --------
     std::uniform_int_distribution<size_t> dist2(0, sameBlockConflicts.size() - 1);
 
     Coord second = sameBlockConflicts[dist2(gen)];
@@ -175,7 +166,6 @@ bool SolverHillClimbConflictCells::solve()
 
         if (noImprovementCnt > m_restart)
         {
-            //std::cout << "resatrt\n";
             restart();
             noImprovementCnt = 0;
         }

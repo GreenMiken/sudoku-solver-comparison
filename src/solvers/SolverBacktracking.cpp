@@ -11,17 +11,14 @@ bool SolverBacktracking::solve()
         {
             Coord coord(row, col);
 
-            // najdi prázdnou buňku
             if (m_grid.getNumber(coord) == 0)
             {
-                // zkus všechna čísla
                 for (int num = 1; num <= static_cast<int>(m_size); ++num)
                 {
                     if (isValid(coord, num))
                     {
                         m_grid.setNumber(coord, num);
 
-                        // rekurze
                         if (solve())
                             return true;
 
@@ -29,18 +26,16 @@ bool SolverBacktracking::solve()
                         m_grid.setNumber(coord, 0);
                     }
                 }
-                // žádné číslo nefungovalo
                 return false;
             }
         }
     }
-    // žádná prázdná buňka -> vyřešeno
     return true;
 }
 
 bool SolverBacktracking::isValid(const Coord& coord, int num) const
 {
-    // -------- řádek --------
+    // row
     for (size_t col = 0; col < m_size; ++col)
     {
         if (col == coord.col)
@@ -50,7 +45,7 @@ bool SolverBacktracking::isValid(const Coord& coord, int num) const
             return false;
     }
 
-    // -------- sloupec --------
+    // col
     for (size_t row = 0; row < m_size; ++row)
     {
         if (row == coord.row)
@@ -60,7 +55,6 @@ bool SolverBacktracking::isValid(const Coord& coord, int num) const
             return false;
     }
 
-    // -------- blok --------
     size_t startRow =
             (coord.row / m_blockSize) * m_blockSize;
 

@@ -17,7 +17,6 @@ void AbstractLocalSearchSolver::restart()
     static std::random_device rd;
     static std::mt19937 gen(rd());
 
-    // projdi všechny bloky
     for (size_t blockRow = 0; blockRow < blockSize; ++blockRow)
     {
         for (size_t blockCol = 0; blockCol < blockSize; ++blockCol)
@@ -25,10 +24,8 @@ void AbstractLocalSearchSolver::restart()
             std::vector<int> missingNumbers;
             std::vector<Coord> freeCoords;
 
-            // čísla, která už jsou v bloku
             std::vector<bool> used(m_size + 1, false);
 
-            // projdi buňky bloku
             for (size_t r = 0; r < blockSize; ++r)
             {
                 for (size_t c = 0; c < blockSize; ++c)
@@ -48,17 +45,14 @@ void AbstractLocalSearchSolver::restart()
                 }
             }
 
-            // zjisti chybějící čísla
             for (size_t num = 1; num <= m_size; ++num)
             {
                 if (!used[num])
                     missingNumbers.push_back(num);
             }
 
-            // náhodně promíchej
             std::shuffle(missingNumbers.begin(), missingNumbers.end(), gen);
 
-            // doplň čísla do nefixních buněk
             for (size_t i = 0; i < freeCoords.size(); ++i)
             {
                 m_grid.setNumber(freeCoords[i], missingNumbers[i]);
@@ -73,7 +67,6 @@ int AbstractLocalSearchSolver::countConflicts() const
 {
     int conflicts = 0;
 
-    // -------- ŘÁDKY --------
     for (size_t row = 0; row < m_size; ++row)
     {
         std::vector<int> freq(m_size + 1, 0);
@@ -82,7 +75,6 @@ int AbstractLocalSearchSolver::countConflicts() const
         {
             int value = m_grid.getNumber(Coord(row, col));
 
-            // 0 ignorujeme
             if (value != 0)
                 freq[value]++;
         }
@@ -94,7 +86,6 @@ int AbstractLocalSearchSolver::countConflicts() const
         }
     }
 
-    // -------- SLOUPCE --------
     for (size_t col = 0; col < m_size; ++col)
     {
         std::vector<int> freq(m_size + 1, 0);
@@ -124,13 +115,11 @@ std::pair<Coord, Coord> AbstractLocalSearchSolver::getRandomCoordsInBlock() cons
 
     while (true)
     {
-        // náhodný blok
         size_t blockRow = gen() % m_blockSize;
         size_t blockCol = gen() % m_blockSize;
 
         std::vector<Coord> candidates;
 
-        // projdi blok
         for (size_t r = 0; r < m_blockSize; ++r)
         {
             for (size_t c = 0; c < m_blockSize; ++c)
@@ -145,7 +134,6 @@ std::pair<Coord, Coord> AbstractLocalSearchSolver::getRandomCoordsInBlock() cons
             }
         }
 
-        // musí být alespoň 2 nefixní
         if (candidates.size() < 2)
             continue;
 

@@ -11,7 +11,6 @@ void AbstractSudokuSolver::visualize() const
 {
     for (size_t row = 0; row < m_size; ++row)
     {
-        // horizontální oddělovač bloků
         if (row % m_blockSize == 0)
         {
             for (size_t i = 0; i < m_size * 2 + m_blockSize + 1; ++i)
@@ -22,7 +21,6 @@ void AbstractSudokuSolver::visualize() const
 
         for (size_t col = 0; col < m_size; ++col)
         {
-            // vertikální oddělovač bloků
             if (col % m_blockSize == 0)
                 std::cout << "| ";
 
@@ -37,7 +35,6 @@ void AbstractSudokuSolver::visualize() const
         std::cout << "|\n";
     }
 
-    // spodní čára
     for (size_t i = 0; i < m_size * 2 + m_blockSize + 1; ++i)
         std::cout << "-";
 
